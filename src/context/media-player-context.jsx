@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback  } from 'react'
 import { apiSetStorage, apiGetStorage, apiObjGetStorage, apiObjSetStorage } from '../utils/api'
-import { unique } from 'shorthash'
 import { pad } from '../utils/obj-functions'
 import { useTranslation } from 'react-i18next'
-import { serieLang, serieNaviType } from '../utils/dynamic-lang'
+import { obsLangData } from '../constants/obs-langs'
 
 const MediaPlayerContext = React.createContext([{}, () => {}])
 const MediaPlayerProvider = (props) => {
@@ -46,10 +45,11 @@ const MediaPlayerProvider = (props) => {
   }, [])
 
   useEffect(() => {
+    const lang = obsLangData[curLang]?.publishedID
     const params = new URLSearchParams({
       subject: 'Open Bible Stories',
       stage: 'prod',
-      lang: curLang,
+      lang,
     })
     const getLangUrl = async () => {
       const langRes = await fetch(`https://git.door43.org/api/v1/catalog/search?${params}`)
@@ -62,6 +62,10 @@ const MediaPlayerProvider = (props) => {
       console.log(langRes)
       const resText = await new Response(langRes.body).json()
       const useUrl = resText?.data[0]?.repo?.html_url
+      console.log(params)
+      console.log(resText?.data[0]) 
+      // "content_format": "markdown"
+      // "metadata_type": 
       console.log(useUrl) 
       setLangUrl(useUrl)
     }
