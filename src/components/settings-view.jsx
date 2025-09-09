@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import CheckIcon from '@mui/icons-material/Check'
+import NavCloseIcon from '@mui/icons-material/Close'
 import CssBaseline from '@mui/material/CssBaseline'
 import Toolbar from '@mui/material/Toolbar'
 import { obsLangData } from '../constants/obs-langs'
@@ -37,7 +37,7 @@ const removeDash = (org) => org.replace(/-/gi, "")
 export default function SettingsView({onConfirmClick,initialSettingsMode}) {
   const { t, i18n } = useTranslation();
   const { size } = useBrowserData()
-  const { setSelectedLanguage } = useMediaPlayer()
+  const { setSelectedLanguage, selectedLanguage } = useMediaPlayer()
   const defaultLang ="eng"
   const activeLang = defaultLang
   const [selectedLocLang,setSelectedLocLang] = useState({value: "eng", label: "English"})
@@ -64,26 +64,31 @@ export default function SettingsView({onConfirmClick,initialSettingsMode}) {
     console.log(curValue)                                
     setSelectedLocLang(curValue)
     setSelectedLanguage(curValue.value)
+    onConfirmClick && onConfirmClick()
   }
   const handleConfirmClick = () => {
     console.log("confirm click")
     onConfirmClick && onConfirmClick()
+    // Simulate a click on the current value
+    handleLangClick(selectedLocLang.value)
   }
+  // const showHeader = (!selectedLanguage) || initialSettingsMode
+  const showHeader = true
   return (
     <Box sx={{ tp: 3 }}>
       <CssBaseline />
-      {initialSettingsMode && (<SimpleAppBar position="fixed">
+      {showHeader && (<SimpleAppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             OBS Wiki
           </Typography>
           <Button
             variant="contained"
-            color="success"
+            color="error"
             aria-label="confirm settings"
             onClick={handleConfirmClick}
-            startIcon={<CheckIcon />}
-          >Confirm Language
+            startIcon={<NavCloseIcon/>}
+          >Cancel
           </Button>
         </Toolbar>
       </SimpleAppBar>)}

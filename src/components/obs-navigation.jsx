@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import Typography from '@mui/material/Typography'
 import Fab from '@mui/material/Fab'
 import ChevronLeft from '@mui/icons-material/ChevronLeft'
+import Language from '@mui/icons-material/Language'
 import ImageList from '@mui/material/ImageList'
 import ImageListItem from '@mui/material/ImageListItem'
 import ImageListItemBar from '@mui/material/ImageListItemBar'
+import Box from '@mui/material/Box'
 import ReactMarkdown from 'react-markdown'
 import { rangeArray, pad } from '../utils/obj-functions'
 import { obsHierarchy, obsTitles, obsStoryList } from '../constants/obsHierarchy'
@@ -40,7 +42,7 @@ const SerieGridBar = (props) => {
 const OBSNavigation = (props) => {
   // eslint-disable-next-line no-unused-vars
   const { size, width } = useBrowserData()
-  const { verseText } = useMediaPlayer()
+  const { verseText, selectedLanguage } = useMediaPlayer()
   const { onExitNavigation, onStartPlay } = props
   // const curSerie = (curPlay!=null) ? curPlay.curSerie : undefined
   const curSerie = bibleData
@@ -159,17 +161,35 @@ const OBSNavigation = (props) => {
   }
   return (
     <div>
-      <Fab
-        onClick={handleReturn}
-        color="primary"
-      >
-        <ChevronLeft />
-      </Fab>
-      {(curLevel<=2) && (
       <>
-        <Typography
+        {(curLevel>1) && (<Typography
           type="title"
-        >OBS Navigation</Typography>
+          sx={{ pl: 2 }}
+        >
+          <Fab
+            onClick={handleReturn}
+            color="primary"
+            size="small"
+          >
+            <ChevronLeft/>  <></>
+          </Fab>
+          {(curLevel===3) && (<Typography
+              type="title"
+          >{obsTitles[level2-1]}</Typography>)}            
+        </Typography>)}
+        {(curLevel===1) && (<Typography
+          type="title"
+          sx={{ pl: 2 }}
+        >
+          OBS Navigation - {selectedLanguage}  <></>
+          <Fab
+            onClick={handleReturn}
+            color="primary"
+            size="small"
+          >
+            <Language/>
+          </Fab>
+        </Typography>)}
         <ImageList
           rowHeight={rowHeight}
           cols={useCols}
@@ -192,15 +212,17 @@ const OBSNavigation = (props) => {
           )
         })}
         </ImageList>
-      </>)}
+      </>
       {(curLevel===3) && (
       <>
-        <Typography
-          type="title"
-        >{obsTitles[level2-1]}</Typography>
-        <ReactMarkdown>
-          {curStory}
-        </ReactMarkdown>
+        <Box
+          sx={{padding: 3}}
+        >
+          <ReactMarkdown
+          >
+            {curStory}
+          </ReactMarkdown>
+        </Box>
       </>)}
     </div>
   )

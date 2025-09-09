@@ -59,14 +59,10 @@ const MediaPlayerProvider = (props) => {
       // const usePath = "https://git.door43.org/api/v1/catalog/list/languages?subject=Open%20Bible%20Stories&stage=prod&lang=en"
       // const usePath = "https://git.door43.org/api/v1/catalog/list/languages?subject=Open%20Bible%20Stories&stage=prod"
       // const response = await fetch(usePath).then(response => response.json())
-      console.log(langRes)
       const resText = await new Response(langRes.body).json()
       const useUrl = resText?.data[0]?.repo?.html_url
-      console.log(params)
-      console.log(resText?.data[0]) 
       // "content_format": "markdown"
       // "metadata_type": 
-      console.log(useUrl) 
       setLangUrl(useUrl)
     }
     if ((curLang) && (curLang.length>0)) getLangUrl()
