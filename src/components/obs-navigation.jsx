@@ -9,9 +9,10 @@ import ImageListItemBar from '@mui/material/ImageListItemBar'
 import Box from '@mui/material/Box'
 import ReactMarkdown from 'react-markdown'
 import { rangeArray, pad } from '../utils/obj-functions'
-import { obsHierarchy, obsTitles, obsStoryList } from '../constants/obsHierarchy'
+import { obsHierarchy, obsStoryList } from '../constants/obsHierarchy'
 import useBrowserData from '../hooks/useBrowserData'
 import useMediaPlayer from '../hooks/useMediaPlayer'
+import { obsLangData } from '../constants/obs-langs'
 
 const bibleData = {
   freeType: false,
@@ -37,6 +38,18 @@ const SerieGridBar = (props) => {
         subtitle={subtitle}
       />
   )
+}
+
+const getTitleFromMd = (md) => {
+  const regExpr = /# .*\.\s*(\S.*)\n/
+  let title = ""
+  if (md && md.length>0) {
+    const found = md.match(regExpr)
+    if ((found) && found.length>0) {
+      title = found[1]
+    }
+  }
+  return title
 }
 
 const OBSNavigation = (props) => {
@@ -110,10 +123,12 @@ const OBSNavigation = (props) => {
     const beg = curObj.beg
     const end = beg + curObj.count -1
     rangeArray(beg,end).forEach(inx => {
+      const checkMd = ((verseText) && verseText[inx-1]) || ""
+      const title = getTitleFromMd(checkMd)
       const curIconObj = {
         key: inx,
         imgSrc: `/obsIcons/obs-en-${pad(inx)}-01.jpg`,
-        title: obsTitles[inx-1],
+        title,
         isBookIcon: false
       }
       validIconList.push(curIconObj)
@@ -159,6 +174,29 @@ const OBSNavigation = (props) => {
       rowHeight = width / 5.33
     }
   }
+  const removeDash = (org) => org.replace(/-/gi, "")
+  const getNameLabel = (nameObj) => {
+    let label = ""
+    if ((nameObj?.en) && (nameObj?.en === nameObj?.n)) {
+      label = nameObj?.n
+    } else if ((nameObj?.n) && (nameObj?.en)) {
+      label = `${nameObj?.n} - ${nameObj?.en}`
+    } else if (nameObj?.n) {
+      label = nameObj?.n
+    } else {
+      label = nameObj?.en || ""
+    }
+    return label
+  }
+  let nameLabel = ""
+  Object.keys(obsLangData).forEach(lKey => {
+    if (removeDash(lKey) === selectedLanguage) {
+      nameLabel = getNameLabel({
+        n: obsLangData[lKey].nm,
+        en: obsLangData[lKey].eNm,
+      })
+    }
+  })
   return (
     <div>
       <>
@@ -171,17 +209,14 @@ const OBSNavigation = (props) => {
             color="primary"
             size="small"
           >
-            <ChevronLeft/>  <></>
+            <ChevronLeft/>
           </Fab>
-          {(curLevel===3) && (<Typography
-              type="title"
-          >{obsTitles[level2-1]}</Typography>)}            
         </Typography>)}
         {(curLevel===1) && (<Typography
           type="title"
           sx={{ pl: 2 }}
         >
-          OBS Navigation - {selectedLanguage}  <></>
+          OBS Navigation - {nameLabel}  <></>
           <Fab
             onClick={handleReturn}
             color="primary"
