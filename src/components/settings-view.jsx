@@ -61,13 +61,11 @@ export default function SettingsView({onConfirmClick,initialSettingsMode}) {
   const handleLangClick = (l) => {
     const checkValue = removeDash(l)                                
     const curValue = availableLangOptions.find(obj => (obj.value === checkValue))
-    console.log(curValue)                                
     setSelectedLocLang(curValue)
     setSelectedLanguage(curValue.value)
     onConfirmClick && onConfirmClick()
   }
   const handleConfirmClick = () => {
-    console.log("confirm click")
     onConfirmClick && onConfirmClick()
     // Simulate a click on the current value
     handleLangClick(selectedLocLang.value)
