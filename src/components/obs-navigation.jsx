@@ -10,41 +10,33 @@ import {
 import { ChevronLeft, Language } from "@mui/icons-material";
 import ReactMarkdown from "react-markdown";
 import { rangeArray, pad } from "../utils/obj-functions";
-import { obsHierarchy, obsStoryList } from "../constants/obsHierarchy";
+import { obsHierarchy } from "../constants/obsHierarchy";
 import useBrowserData from "../hooks/useBrowserData";
 import useMediaPlayer from "../hooks/useMediaPlayer";
 import { obsLangData } from "../constants/obs-langs";
-
-const bibleData = {
-  freeType: false,
-  curPath: "",
-  title: "Open Bible Stories",
-  description: "",
-  image: {
-    origin: "Local",
-    filename: "",
-  },
-  language: "eng",
-  mediaType: "bible",
-  episodeList: obsStoryList,
-  uniqueID: "uW.OBS.en",
-};
 
 const SerieGridBar = ({ title, subtitle }) => (
   <ImageListItemBar title={title} subtitle={subtitle} />
 );
 
 const getTitleFromMd = (md) => {
-  if (!md?.length) return "";
-  const regExpr = /# .*\.\s*(\S.*)\n/;
-  const found = md.match(regExpr);
-  return found?.[1] || "";
+  let retVal = "";
+  if (md?.length) {
+    const regExpr = /# .*\.\s*(\S.*)\n/;
+    const found = md.match(regExpr);
+    retVal = found?.[1]
+    if (!found) { // Now search for a title without number ID string
+      const regExpr2 = /#\s*(\S.*)\n/;
+      const found2 = md.match(regExpr2);
+      retVal = found2?.[1]  
+    }
+  }
+  return retVal;
 };
 
-const OBSNavigation = ({ onExitNavigation, onStartPlay }) => {
+const OBSNavigation = ({ onExitNavigation }) => {
   const { size, width } = useBrowserData();
   const { verseText, selectedLanguage } = useMediaPlayer();
-  const curSerie = bibleData;
   const [curLevel, setCurLevel] = useState(1);
   const [level1, setLevel1] = useState(1);
   const [level2, setLevel2] = useState();
@@ -140,8 +132,6 @@ const OBSNavigation = ({ onExitNavigation, onStartPlay }) => {
 
   const { cols: useCols, rowHeight } = getGridConfig();
 
-  const removeDash = (org) => org.replace(/-/gi, "");
-
   const getNameLabel = (nameObj) => {
     if (nameObj?.en && nameObj?.en === nameObj?.n) return nameObj?.n;
     if (nameObj?.n && nameObj?.en) return `${nameObj?.n} - ${nameObj?.en}`;
@@ -150,7 +140,7 @@ const OBSNavigation = ({ onExitNavigation, onStartPlay }) => {
 
   const nameLabel =
     Object.keys(obsLangData)
-      .filter((lKey) => removeDash(lKey) === selectedLanguage)
+      .filter((lKey) =>  obsLangData[lKey].publishedID === selectedLanguage)
       .map((lKey) =>
         getNameLabel({
           n: obsLangData[lKey].nm,

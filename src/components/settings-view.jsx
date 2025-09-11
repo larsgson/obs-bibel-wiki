@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Box,
@@ -28,17 +28,29 @@ const getNameLabel = (nameObj) => {
 
 const removeDash = (str) => str.replace(/-/gi, "");
 
-export default function SettingsView({ onConfirmClick, initialSettingsMode }) {
+export default function SettingsView({ onConfirmClick }) {
   const { i18n } = useTranslation();
   const { size } = useBrowserData();
-  const { setSelectedLanguage } = useMediaPlayer();
+  const { setSelectedLanguage, selectedLanguage } = useMediaPlayer();
   const defaultLang = "eng";
-  const activeLang = defaultLang;
+  const [activeLang,setActiveLang] = useState(defaultLang);
   const [selectedLocLang, setSelectedLocLang] = useState({
-    value: "eng",
+    value: defaultLang,
     label: "English",
-    origId: "eng",
+    origId: "en",
   });
+
+  useEffect(() => {
+    if (selectedLanguage !== selectedLocLang?.origId) {
+      const curValue = availableLangOptions.find(
+        (obj) => obj.orgId === selectedLanguage,
+      );
+      if (curValue) {
+        setSelectedLocLang(curValue);
+        setActiveLang(curValue.orgId)
+      }
+    }
+  },[selectedLanguage]);
 
   const availableLangOptions = useMemo(() => {
     return Object.keys(obsLangData).map((lKey) => {
@@ -71,7 +83,6 @@ export default function SettingsView({ onConfirmClick, initialSettingsMode }) {
       (obj) => obj.value === checkValue,
     );
     if (curValue) {
-      console.log(curValue)
       setSelectedLocLang(curValue);
       setSelectedLanguage(curValue.orgId);
       onConfirmClick?.();
@@ -80,7 +91,6 @@ export default function SettingsView({ onConfirmClick, initialSettingsMode }) {
 
   const handleConfirmClick = () => {
     onConfirmClick?.();
-    console.log(selectedLocLang)
     // Simulate a click on the current value
     handleLangClick(selectedLocLang.value)    
   };
@@ -158,7 +168,7 @@ export default function SettingsView({ onConfirmClick, initialSettingsMode }) {
               title = `${lData?.label} (${countryCode})`;
             }
 
-            const isActive = activeLang === lng;
+            const isActive = activeLang === lData?.orgId;
             const bkgdColor = isActive ? "lightblue" : "#020054";
 
             return (

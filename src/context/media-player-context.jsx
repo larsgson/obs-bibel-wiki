@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { apiSetStorage, apiGetStorage } from "../utils/api";
 import { pad } from "../utils/obj-functions";
-import { obsLangData } from "../constants/obs-langs";
 
 const MediaPlayerContext = React.createContext([{}, () => {}]);
 
@@ -20,27 +19,6 @@ const MediaPlayerProvider = ({ children }) => {
     // ToDo: Fix the updates of verseText to happen one level lower
     setState((prevState) => ({ ...prevState, ...updates }));
   };
-
-  // const fetchImagePositions = useCallback(
-  //   async (index) => {
-  //     try {
-  //       const response = await fetch(`data/img_pos${pad(index + 1)}.json`);
-  //       const data = await response.json();
-  //       updateState({
-  //         imgPosOBS: {
-  //           ...state.imgPosOBS,
-  //           [index]: data,
-  //         },
-  //       });
-  //     } catch (error) {
-  //       console.error(
-  //         `Failed to fetch image positions for story ${index + 1}:`,
-  //         error,
-  //       );
-  //     }
-  //   },
-  //   [],
-  // );
 
   const fetchStoryText = useCallback(
     async (url, index) => {
@@ -67,7 +45,8 @@ const MediaPlayerProvider = ({ children }) => {
   // Load language URL when selected language changes
   useEffect(() => {
     const loadLanguageUrl = async () => {
-      const lang = obsLangData[state.selectedLanguage]?.publishedID;
+      // const lang = obsLangData[state.selectedLanguage]?.publishedID;
+      const lang = state.selectedLanguage;
       if (!lang) return;
 
       const params = new URLSearchParams({
@@ -112,33 +91,17 @@ const MediaPlayerProvider = ({ children }) => {
     }
   }, [state.langUrl]);
 
-  // Load image positions for English stories
-  // useEffect(() => {
-  //   const loadAllImagePositions = async () => {
-  //     // const maxStories = 50
-  //     const maxStories = 2
-  //     for (let i = 0; i < maxStories; i++) {
-  //       await fetchImagePositions(i);
-  //     }
-  //   };
-
-  //   if (state.selectedLanguage === "en") {
-  //     loadAllImagePositions();
-  //   }
-  // }, [state.selectedLanguage, fetchImagePositions]);
-
   // Initialize stored data on mount
   useEffect(() => {
     const initializeStoredData = async () => {
       try {
-        const [selectedLanguage, navHist] = await Promise.all([
+        const [selectedLanguage, langIsSelected] = await Promise.all([
           apiGetStorage("selectedLanguage"),
-          apiGetStorage("navHist"),
+          apiGetStorage("langIsSelected"),    
         ]);
-
         updateState({
           selectedLanguage: selectedLanguage || "en",
-          navHist: navHist || null,
+          langIsSelected: langIsSelected || false,
         });
       } catch (error) {
         console.error("Failed to load stored data:", error);
@@ -156,6 +119,8 @@ const MediaPlayerProvider = ({ children }) => {
     try {
       await apiSetStorage("selectedLanguage", newLanguage);
       updateState({ selectedLanguage: newLanguage });
+      await apiSetStorage("langIsSelected", true);
+      updateState({ langIsSelected: true });
     } catch (error) {
       console.error("Failed to save selected language:", error);
     }

@@ -2,7 +2,6 @@ import * as React from "react";
 import { useTheme, ThemeProvider } from "@mui/material/styles";
 import SettingsView from "./settings-view";
 import ObsNavigattion from "./obs-navigation";
-import HomeView from "./home-view";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import useMediaPlayer from "../hooks/useMediaPlayer";
@@ -17,9 +16,9 @@ const defaultBackgroundStyle = {
   color: "whitesmoke",
 };
 
-export default function AudioBibleNavigationApp() {
+export default function OBSApp() {
   const theme = useTheme();
-  const { startPlay, curPlay, selectedLanguage } = useMediaPlayer();
+  const { startPlay, curPlay, selectedLanguage, langIsSelected } = useMediaPlayer();
   const isPlaying = !isEmptyObj(curPlay);
   const { size } = useBrowserData();
   const isMobileSize = size === "sm" || size === "xs";
@@ -33,6 +32,11 @@ export default function AudioBibleNavigationApp() {
       // setMessages(refreshMessages());
     }
   }, [menuValue, isMobileSize]);
+
+  React.useEffect(() => {
+    // No need to select language on initial load - reset menu value to 1
+    if (langIsSelected && (menuValue===2)) setMenuValue(1)
+  }, [langIsSelected]);
 
   const handleStartBiblePlay = (topIdStr, curSerie, bookObj, id) => {
     const { bk } = bookObj;
@@ -57,13 +61,6 @@ export default function AudioBibleNavigationApp() {
             {menuValue === 1 && (
               <ObsNavigattion
                 onExitNavigation={handleTopClick}
-                onStartPlay={handleStartBiblePlay}
-              />
-            )}
-            {menuValue === 0 && (
-              <HomeView
-                onExitNavigation={handleTopClick}
-                onAddNavigation={() => setMenuValue(1)}
                 onStartPlay={handleStartBiblePlay}
               />
             )}
