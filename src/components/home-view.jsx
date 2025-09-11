@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Typography, Grid, ImageList, ImageListItem } from "@mui/material";
+import { Typography, Grid2, ImageList, ImageListItem } from "@mui/material";
 import { isEmptyObj } from "../utils/obj-functions";
 import { getChIcon } from "../utils/icon-handler";
 import useMediaPlayer from "../hooks/useMediaPlayer";
@@ -150,8 +150,8 @@ const HomeView = ({ onStartPlay }) => {
       )}
 
       {!isPlaying && myList.length > 0 && (
-        <Grid container alignItems="center" spacing={2}>
-          <Grid item xs={12}>
+        <Grid2 container alignItems="center" spacing={2}>
+          <Grid2 xs={12}>
             <Typography variant="h5" component="h2" sx={{ pt: 3, mb: 2 }}>
               Continue
             </Typography>
@@ -160,8 +160,8 @@ const HomeView = ({ onStartPlay }) => {
               epList={myList}
               lng={lng}
             />
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       )}
     </div>
   );
