@@ -6,7 +6,12 @@ export const obsExtra = [
 ]
 
 export const obsConflictingID = [
-    "es-419","fas","nep","ori","pt-br","sr-Latn","swa",
+    "es-419","fas","nep","ori","pt-br","sr-Latn","swa","glk"
+]
+
+export const obsOldFormat = [
+    "ar-xzn","azb","bal","bqi","ckb","def","fas-x-eastfars","glk","haz",
+    "kaz","lki","lrc","mzn","qxq","sgh","smy","tks","tly","ukr","uzb","ylb"
 ]
 
 export const obsLangData = {

@@ -21,18 +21,30 @@ const SerieGridBar = ({ title, subtitle }) => (
 
 const getTitleFromMd = (md) => {
   let retVal = "";
-  if (md?.length) {
-    const regExpr = /# .*\.\s*(\S.*)\n/;
+  if (md?.length>0) {
+    const regExpr = /#[\s|\d|\.]*(.*)\n/;
     const found = md.match(regExpr);
     retVal = found?.[1]
     if (!found) { // Now search for a title without number ID string
       const regExpr2 = /#\s*(\S.*)\n/;
       const found2 = md.match(regExpr2);
       retVal = found2?.[1]  
+      if (!found2) {
+        const regExpr3 = /\s*(\S.*)\n/;
+        const found3 = md.match(regExpr3);
+        retVal = found3?.[1]  
+        if (!found3) {
+          const regExpr4 = /.*(\w.*)\n/;
+          const found4 = md.match(regExpr4);
+          retVal = found4?.[1] || ""
+        }
+      }  
     }
   }
   return retVal;
 };
+
+const Image = (props) => <img {...props} style={{maxWidth: '100%'}} />
 
 const OBSNavigation = ({ onExitNavigation }) => {
   const { size, width } = useBrowserData();
@@ -157,7 +169,7 @@ const OBSNavigation = ({ onExitNavigation }) => {
         </Typography>
       ) : (
         <Typography variant="h6" sx={{ pl: 2, mb: 2 }}>
-          OBS Navigation - {nameLabel}
+          OBS - {nameLabel}
           <Fab
             onClick={handleReturn}
             color="primary"
@@ -168,28 +180,30 @@ const OBSNavigation = ({ onExitNavigation }) => {
           </Fab>
         </Typography>
       )}
-
-      <ImageList rowHeight={rowHeight} cols={useCols}>
-        {validIconList.map((iconObj) => {
-          const { key, imgSrc, title, subtitle } = iconObj;
-          return (
-            <ImageListItem
-              onClick={(ev) => handleClick(ev, key)}
-              key={key}
-              sx={{ cursor: "pointer" }}
-            >
-              <img src={imgSrc} alt={title} loading="lazy" />
-              <SerieGridBar title={title} subtitle={subtitle} />
-            </ImageListItem>
-          );
-        })}
-      </ImageList>
-
-      {curLevel === 3 && (
-        <Box sx={{ padding: 3 }}>
-          <ReactMarkdown>{curStory}</ReactMarkdown>
-        </Box>
-      )}
+      <Box sx={(curLevel > 1) ? { pl: "2px", pr: "1px" } : { pl: "4px", pr: "2px" }}>
+        {curLevel === 3 ? (
+          <ReactMarkdown 
+            children={curStory}
+            components={{img:({node,...props})=><img style={{maxWidth:'100%'}}{...props}/>}}
+          />
+        ):(
+          <ImageList rowHeight={rowHeight} cols={useCols}>
+            {validIconList.map((iconObj) => {
+              const { key, imgSrc, title, subtitle } = iconObj;
+              return (
+                <ImageListItem
+                  onClick={(ev) => handleClick(ev, key)}
+                  key={key}
+                  sx={{ cursor: "pointer" }}
+                >
+                  <img src={imgSrc} alt={title} loading="lazy" sx={{ maxWidth: 1 }}/>
+                  <SerieGridBar title={title} subtitle={subtitle} />
+                </ImageListItem>
+              );
+            })}
+          </ImageList>
+        )}
+      </Box>     
     </div>
   );
 };

@@ -53,10 +53,10 @@ export default function OBSApp() {
     <div style={defaultBackgroundStyle}>
       <ThemeProvider theme={theme}>
         {!isPlaying && isMobileSize && selectedLanguage && (
-          <Box sx={{ pb: 7 }} ref={ref}>
+          <Box ref={ref} sx={{ p: 1 }}>
             <CssBaseline />
             {menuValue === settingsMenuIndex && (
-              <SettingsView onConfirmClick={() => setMenuValue(1)} />
+              <SettingsView onLangClick={() => setMenuValue(1)} />
             )}
             {menuValue === 1 && (
               <ObsNavigattion
@@ -67,13 +67,13 @@ export default function OBSApp() {
           </Box>
         )}
         {!isPlaying && !selectedLanguage && (
-          <SettingsView onConfirmClick={() => setMenuValue(1)} />
+          <SettingsView onLangClick={() => setMenuValue(1)} />
         )}
         {!isPlaying && !isMobileSize && selectedLanguage && (
           <Box sx={{ display: "flex" }}>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 1 }}>
               {menuValue === settingsMenuIndex && (
-                <SettingsView onConfirmClick={() => setMenuValue(1)} />
+                <SettingsView onLangClick={() => setMenuValue(1)} />
               )}
               {menuValue === 1 && (
                 <ObsNavigattion
@@ -85,7 +85,7 @@ export default function OBSApp() {
           </Box>
         )}
         {isPlaying && menuValue === settingsMenuIndex && (
-          <SettingsView onConfirmClick={() => setMenuValue(1)} />
+          <SettingsView onLangClick={() => setMenuValue(1)} />
         )}
         {isPlaying && menuValue === 1 && (
           <ObsNavigattion

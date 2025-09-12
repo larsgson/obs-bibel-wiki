@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
 import SimpleAppBar from "./simple-app-bar";
-import { obsLangData } from "../constants/obs-langs";
+import { obsLangData, obsOldFormat } from "../constants/obs-langs";
 import useBrowserData from "../hooks/useBrowserData";
 import useMediaPlayer from "../hooks/useMediaPlayer";
 
@@ -28,20 +28,20 @@ const getNameLabel = (nameObj) => {
 
 const removeDash = (str) => str.replace(/-/gi, "");
 
-export default function SettingsView({ onConfirmClick }) {
+export default function SettingsView({ onLangClick }) {
   const { i18n } = useTranslation();
   const { size } = useBrowserData();
   const { setSelectedLanguage, selectedLanguage } = useMediaPlayer();
-  const defaultLang = "eng";
+  const defaultLang = "en";
   const [activeLang,setActiveLang] = useState(defaultLang);
   const [selectedLocLang, setSelectedLocLang] = useState({
     value: defaultLang,
     label: "English",
-    origId: "en",
+    orgId: "en",
   });
 
   useEffect(() => {
-    if (selectedLanguage !== selectedLocLang?.origId) {
+    if ((selectedLanguage) && (selectedLanguage !== selectedLocLang?.orgId)) {
       const curValue = availableLangOptions.find(
         (obj) => obj.orgId === selectedLanguage,
       );
@@ -79,18 +79,18 @@ export default function SettingsView({ onConfirmClick }) {
 
   const handleLangClick = (langKey) => {
     const checkValue = removeDash(langKey);
+    console.log(checkValue)
     const curValue = availableLangOptions.find(
-      (obj) => obj.value === checkValue,
+      (obj) => removeDash(obj.orgId) === checkValue,
     );
     if (curValue) {
       setSelectedLocLang(curValue);
       setSelectedLanguage(curValue.orgId);
-      onConfirmClick?.();
+      onLangClick?.();
     }
   };
 
-  const handleConfirmClick = () => {
-    onConfirmClick?.();
+  const handleButtonClick = () => {
     // Simulate a click on the current value
     handleLangClick(selectedLocLang.value)    
   };
@@ -115,16 +115,15 @@ export default function SettingsView({ onConfirmClick }) {
               component="div"
               sx={{ flexGrow: 1 }}
             >
-              OBS Wiki
+              Open Bible Stories
             </Typography>
             <Button
               variant="contained"
               color="error"
-              aria-label="confirm settings"
-              onClick={handleConfirmClick}
+              aria-label="Lang settings"
+              onClick={handleButtonClick}
               startIcon={<CloseIcon />}
             >
-              Cancel
             </Button>
           </Toolbar>
         </SimpleAppBar>
@@ -169,14 +168,16 @@ export default function SettingsView({ onConfirmClick }) {
             }
 
             const isActive = activeLang === lData?.orgId;
+            const isDisabled = obsOldFormat.includes(lng) || obsOldFormat.includes(lData?.value)
             const bkgdColor = isActive ? "lightblue" : "#020054";
 
             return (
               <ImageListItem
                 key={lng}
-                onClick={() => handleLangClick(lng)}
+                onClick={isDisabled ? () => console.log("disabled lang") : () => handleLangClick(lData?.orgId)}
                 sx={{
-                  cursor: "pointer",
+                  opacity: isDisabled ? 0.5 : 1,
+                  cursor: isDisabled ? "not-allowed" : "pointer",
                   "&:hover": {
                     opacity: 0.8,
                   },

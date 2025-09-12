@@ -7,7 +7,7 @@ const MediaPlayerContext = React.createContext([{}, () => {}]);
 const MediaPlayerProvider = ({ children }) => {
   const [state, setState] = useState({
     isPlaying: false,
-    selectedLanguage: "en",
+    selectedLanguage: null,
     navHist: null,
     imgPosOBS: {},
     verseText: {},
@@ -100,7 +100,7 @@ const MediaPlayerProvider = ({ children }) => {
           apiGetStorage("langIsSelected"),    
         ]);
         updateState({
-          selectedLanguage: selectedLanguage || "en",
+          selectedLanguage: selectedLanguage,
           langIsSelected: langIsSelected || false,
         });
       } catch (error) {
