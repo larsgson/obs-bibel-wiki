@@ -50,6 +50,9 @@ importers:
       epitelete-html:
         specifier: 0.2.21-beta.2
         version: 0.2.21-beta.2
+      howler:
+        specifier: ^2.2.4
+        version: 2.2.4
       i18next:
         specifier: ^23.16.8
         version: 23.16.8
@@ -113,18 +116,12 @@ importers:
       react-player:
         specifier: ^2.16.0
         version: 2.16.1(react@18.3.1)
-      react-sound:
-        specifier: ^1.2.0
-        version: 1.2.0(react@18.3.1)
       rect-crop:
         specifier: ^0.0.0
         version: 0.0.0
       shorthash:
         specifier: ^0.0.2
         version: 0.0.2
-      soundmanager2:
-        specifier: ^2.97.20170602
-        version: 2.97.20170602
     devDependencies:
       '@vitejs/plugin-react-swc':
         specifier: ^3.8.0
@@ -2400,6 +2397,9 @@ packages:
     resolution: {integrity: sha512-ycURW7oUxE2sNiPVw1HVEFsW+ecOpJ5zaj7eC0RlwhibhRBod20muUN8qu/gzx956YrLolVvs1MTXwKgC2rVEg==}
     engines: {node: '>=0.10.0'}
 
+  howler@2.2.4:
+    resolution: {integrity: sha512-iARIBPgcQrwtEr+tALF+rapJ8qSc+Set2GJQl7xT1MQzWaVkFebdJhR3alVlSiUf5U7nAANKuj3aWpwerocD5w==}
+
   html-parse-stringify@3.0.1:
     resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
 
@@ -3384,11 +3384,6 @@ packages:
     peerDependencies:
       react: '>=16.6.0'
 
-  react-sound@1.2.0:
-    resolution: {integrity: sha512-pc2l8f7Oy3VePRRVesBwSSJ0mrCeD/lE5GVCT1RPdEQ7lgbZTDyWI8HokXHmS1v79aiLnd3WTRhfsBAY0NTb8g==}
-    peerDependencies:
-      react: ^15.3.0 || ^16.0.0-0
-
   react-transition-group@4.4.5:
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
     peerDependencies:
@@ -3607,9 +3602,6 @@ packages:
   snapdragon@0.8.2:
     resolution: {integrity: sha512-FtyOnWN/wCHTVXOMwvSv26d+ko5vWlIDD6zoUJ7LW8vh+ZBC8QdljveRP+crNrtBwioEUWy/4dMtbBjA4ioNlg==}
     engines: {node: '>=0.10.0'}
-
-  soundmanager2@2.97.20170602:
-    resolution: {integrity: sha512-2ee7ES9SJ++WkD7PGHMeT4QUuJr7uC3wacD6RoCDlKjdSp9lpEOaKm3lKWKld119DLILjS2l9U6xpXJN6U0KPQ==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -6786,6 +6778,8 @@ snapshots:
       os-homedir: 1.0.2
       os-tmpdir: 1.0.2
 
+  howler@2.2.4: {}
+
   html-parse-stringify@3.0.1:
     dependencies:
       void-elements: 3.1.0
@@ -8000,12 +7994,6 @@ snapshots:
       react: 18.3.1
       react-fast-compare: 3.2.2
 
-  react-sound@1.2.0(react@18.3.1):
-    dependencies:
-      prop-types: 15.8.1
-      react: 18.3.1
-      soundmanager2: 2.97.20170602
-
   react-transition-group@4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.28.2
@@ -8318,8 +8306,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
     optional: true
-
-  soundmanager2@2.97.20170602: {}
 
   source-map-js@1.2.1: {}
 
