@@ -71,13 +71,27 @@ const OBSNavigation = ({ onExitNavigation }) => {
     stopAudio,
     isStopped,
     loadAudioFile,
+    seekTo,
   } = useMediaPlayer();
   const [curLevel, setCurLevel] = useState(1);
   const [level1, setLevel1] = useState(1);
   const [level2, setLevel2] = useState();
   const [curStory, setCurStory] = useState("");
-  const [isAudioPlayerVisible, setIsAudioPlayerVisible] = useState(true);
-  const [userMinimizedPlayer, setUserMinimizedPlayer] = useState(false);
+
+  /**
+   * Audio player state machine:
+   * - 'expanded': Full audio player is visible
+   * - 'minimized': Minimized player (image + play/pause button) is visible
+   * - 'hidden': No player visible (used when audio ends or is stopped)
+   *
+   * State transitions:
+   * - → 'expanded': When navigating to a new/different story, or clicking minimized player
+   * - → 'minimized': When user clicks minimize button on full player
+   * - → 'hidden': (Future use) When audio ends/stops completely
+   *
+   * Preserves minimized state when re-navigating to the same story
+   */
+  const [audioPlayerState, setAudioPlayerState] = useState("expanded");
   const [showEpisodeDescription, setShowEpisodeDescription] = useState(false);
 
   const handleClick = (ev, id) => {
@@ -95,9 +109,9 @@ const OBSNavigation = ({ onExitNavigation }) => {
         stopAudio();
       }
 
-      // Reset userMinimizedPlayer when navigating to a different story or first story
+      // Reset to expanded when navigating to a different story or first story
       if (isDifferentStory || currentStoryIndex === null) {
-        setUserMinimizedPlayer(false);
+        setAudioPlayerState("expanded");
       }
 
       setLevel2(id);
@@ -105,10 +119,13 @@ const OBSNavigation = ({ onExitNavigation }) => {
       // Reset isStopped and load audio when entering a new story for languages with full audio
       if (langType[selectedLanguage]?.hasAudio === "full") {
         updateState({ isStopped: false });
+        // Only load audio if it's a different story or no audio is loaded yet
         const storyIndex = id - 1; // Convert to 0-based index
-        const audioUrl = obsStoryList[storyIndex]?.filename;
-        if (audioUrl) {
-          loadAudioFile(storyIndex, audioUrl);
+        if (isDifferentStory || currentStoryIndex === null) {
+          const audioUrl = obsStoryList[storyIndex]?.filename;
+          if (audioUrl) {
+            loadAudioFile(storyIndex, audioUrl);
+          }
         }
       }
     }
@@ -119,16 +136,16 @@ const OBSNavigation = ({ onExitNavigation }) => {
     if (level2 && verseText) {
       setCurStory(verseText[level2 - 1] || "");
     }
-    // Only reset audio player visibility when navigating to a story, unless user minimized it
-    if (level2 !== null && currentStoryIndex !== null) {
-      const isCurrentStory = level2 - 1 === currentStoryIndex;
-      if (isCurrentStory && !userMinimizedPlayer) {
-        setIsAudioPlayerVisible(true);
+    // Set to expanded when navigating to a story, unless it's already minimized
+    if (level2 !== null && audioPlayerState !== "minimized") {
+      const isCurrentStory =
+        currentStoryIndex !== null && level2 - 1 === currentStoryIndex;
+      // Only expand if navigating to a different story or first time
+      if (!isCurrentStory || currentStoryIndex === null) {
+        setAudioPlayerState("expanded");
       }
-    } else if (level2 !== null && !userMinimizedPlayer) {
-      setIsAudioPlayerVisible(true);
     }
-  }, [verseText, level2, currentStoryIndex, userMinimizedPlayer]);
+  }, [verseText, level2, currentStoryIndex, audioPlayerState]);
 
   // Calculate which episode to show based on exact timing data
   const currentEpisodeIndex = useMemo(() => {
@@ -290,7 +307,7 @@ const OBSNavigation = ({ onExitNavigation }) => {
       const storyNumber = currentStoryIndex + 1; // Convert to 1-based
       setLevel2(storyNumber);
       setCurLevel(3);
-      setIsAudioPlayerVisible(true);
+      setAudioPlayerState("expanded");
     }
   };
 
@@ -315,10 +332,10 @@ const OBSNavigation = ({ onExitNavigation }) => {
           </Fab>
         </Typography>
       )}
-      {/* Button to reopen audio player when closed at level 3 */}
+      {/* Minimized player at level 3 when player is minimized */}
       {curLevel === 3 &&
         langType[selectedLanguage]?.hasAudio === "full" &&
-        !isAudioPlayerVisible &&
+        audioPlayerState === "minimized" &&
         !isStopped &&
         currentAudioUrl && (
           <MinimizedAudioPlayer
@@ -326,16 +343,14 @@ const OBSNavigation = ({ onExitNavigation }) => {
             structuredStories={structuredStories}
             episodeTimings={episodeTimings[level2 - 1]}
             currentEpisodeIndex={currentEpisodeIndex}
-            onClick={() => {
-              setIsAudioPlayerVisible(true);
-              setUserMinimizedPlayer(false);
-            }}
+            onClick={() => setAudioPlayerState("expanded")}
           />
         )}
-      {/* Minimized player to navigate to currently playing story from higher levels */}
+      {/* Minimized player at levels < 3 to navigate to currently playing story */}
       {curLevel < 3 &&
         currentStoryIndex !== null &&
         !isStopped &&
+        audioPlayerState !== "hidden" &&
         langType[selectedLanguage]?.hasAudio === "full" && (
           <MinimizedAudioPlayer
             storyIndex={currentStoryIndex}
@@ -351,7 +366,7 @@ const OBSNavigation = ({ onExitNavigation }) => {
         {curLevel === 3 ? (
           langType[selectedLanguage]?.hasAudio === "full" &&
           currentEpisodeData &&
-          isAudioPlayerVisible ? (
+          audioPlayerState === "expanded" ? (
             // Display single episode synchronized with audio
             <Box
               sx={{
@@ -489,8 +504,91 @@ const OBSNavigation = ({ onExitNavigation }) => {
                 {structuredStories[level2 - 1]?.episodes?.length || 0}
               </Typography>
             </Box>
+          ) : langType[selectedLanguage]?.hasAudio === "full" &&
+            audioPlayerState === "minimized" &&
+            level2 &&
+            currentStoryIndex === level2 - 1 &&
+            structuredStories[level2 - 1]?.episodes &&
+            episodeTimings[level2 - 1] ? (
+            // Display clickable episodes when minimized at the same story
+            <Box>
+              {structuredStories[level2 - 1].episodes.map(
+                (episode, episodeIndex) => {
+                  const timingData = episodeTimings[level2 - 1][episodeIndex];
+                  const episodeStartTime = timingData
+                    ? parseFloat(timingData.pos)
+                    : 0;
+                  const isCurrentEpisode = episodeIndex === currentEpisodeIndex;
+
+                  return (
+                    <Box
+                      key={episodeIndex}
+                      onClick={() => {
+                        seekTo(episodeStartTime);
+                      }}
+                      sx={{
+                        mb: 3,
+                        cursor: "pointer",
+                        transition: "all 0.3s ease",
+                        borderRadius: "8px",
+                        overflow: "hidden",
+                        border: isCurrentEpisode
+                          ? "3px solid #e94560"
+                          : "2px solid transparent",
+                        boxShadow: isCurrentEpisode
+                          ? "0 4px 16px rgba(233, 69, 96, 0.4)"
+                          : "none",
+                        "&:hover": {
+                          transform: "scale(1.02)",
+                          border: isCurrentEpisode
+                            ? "3px solid #e94560"
+                            : "2px solid #0f3460",
+                          boxShadow: isCurrentEpisode
+                            ? "0 6px 20px rgba(233, 69, 96, 0.5)"
+                            : "0 4px 12px rgba(15, 52, 96, 0.3)",
+                        },
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          position: "relative",
+                          width: "100%",
+                          overflow: "hidden",
+                          borderRadius: "8px 8px 0 0",
+                        }}
+                      >
+                        <img
+                          src={episode.imageUrl}
+                          alt={`Episode ${episodeIndex + 1}`}
+                          style={{
+                            maxWidth: "100%",
+                            display: "block",
+                          }}
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          p: 2,
+                          bgcolor: "#181818",
+                          color: "whitesmoke",
+                        }}
+                      >
+                        <ReactMarkdown
+                          children={episode.text}
+                          components={{
+                            img: ({ node, ...props }) => (
+                              <img style={{ maxWidth: "100%" }} {...props} />
+                            ),
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                  );
+                },
+              )}
+            </Box>
           ) : (
-            // Display full story markdown (fallback, when no audio, or when player is closed)
+            // Display full story markdown (fallback, when no audio, or different conditions)
             <ReactMarkdown
               children={curStory}
               components={{
@@ -527,16 +625,13 @@ const OBSNavigation = ({ onExitNavigation }) => {
       {curLevel === 3 &&
         currentAudioUrl &&
         langType[selectedLanguage]?.hasAudio === "full" &&
-        isAudioPlayerVisible && (
+        audioPlayerState === "expanded" && (
           <AudioPlayer
             storyIndex={level2 - 1}
             audioUrl={currentAudioUrl}
             storyTitle={currentStoryTitle}
             episodeTimings={episodeTimings[level2 - 1]}
-            onMinimize={() => {
-              setIsAudioPlayerVisible(false);
-              setUserMinimizedPlayer(true);
-            }}
+            onMinimize={() => setAudioPlayerState("minimized")}
           />
         )}
     </div>
