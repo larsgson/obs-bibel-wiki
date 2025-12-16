@@ -1,0 +1,224 @@
+{
+  "bridgeLanguages": {
+    "Mandarin Chinese Region": [
+      "aai", "afu", "any", "ape", "bov", "brv", "byr", "cmn", "coh", "csy",
+      "gej", "gek", "hak", "hto", "hvn", "ifu", "jow", "kmh", "min", "mmf",
+      "nkv", "nuy", "omw", "opm", "pib", "pny", "rob", "spp", "tig", "uig",
+      "ulb", "wuv", "yre", "yss", "yue"
+    ],
+    "French Region": [
+      "fon", "fra", "fuh", "fuq", "gkp", "hat", "kab", "kng", "ktu", "kwy",
+      "las", "mgq", "mnk", "pov", "sag", "shu", "som", "swc", "wol"
+    ],
+    "Arabic Region": [
+      "acm", "aii", "apc", "apd", "arb", "arq", "ary", "grr", "irk", "rmc",
+      "rml", "rmn", "rmo", "rmy", "rol", "ron", "tzm"
+    ],
+    "Portuguese Region": [
+      "apu", "bor", "cul", "jaa", "kay", "kyz", "mgh", "myu", "mzr", "pab",
+      "pah", "por", "ter", "tgp", "tso", "tuo", "umb", "xav"
+    ],
+    "Bengali Region": [
+      "asm", "ben", "mbc", "ory", "pbc", "unr", "wap"
+    ],
+    "Russian Region": [
+      "azj", "bak", "bel", "bjr", "bxr", "che", "chv", "crh", "hye", "hyw",
+      "kaz", "mhr", "mrj", "rus", "sty", "tat", "tgk", "tuk", "udm", "ukr",
+      "uzn"
+    ],
+    "Indonesian Region": [
+      "abs", "ace", "ban", "bbc", "btd", "bts", "btx", "bug", "ind", "jav",
+      "mad", "mal", "max", "mhs", "mhy", "mkn", "pse", "sas", "sri", "sun",
+      "tpp", "zlm", "zsm"
+    ],
+    "Vietnamese Region": [
+      "agn", "bud", "cdh", "ceg", "cja", "cmi", "cwt", "ige", "jra", "mtq",
+      "nld", "sja", "tyz", "vie"
+    ],
+    "Swahili Region": [
+      "cbt", "gsl", "guz", "hay", "kde", "ktb", "nym", "run", "suk", "swh"
+    ],
+    "Tagalog Region": [
+      "bcl", "bto", "ceb", "gyr", "hil", "ibl", "ifa", "ifb", "ifk", "ify",
+      "ilo", "knb", "kne", "kyb", "mrw", "pag", "pam", "tgl", "war"
+    ],
+    "Thai Region": [
+      "ahk", "bci", "cnh", "cni", "hnj", "ium", "ksw", "kvq", "kxm", "lao",
+      "lbf", "nod", "nst", "sah", "sho", "tha", "wap", "wti", "xis"
+    ],
+    "Hausa Region": [
+      "hau", "jbu", "kby", "knc", "nup", "tiv"
+    ],
+    "Yoruba Region": [
+      "igl", "mkd", "tvw", "yor"
+    ],
+    "Amharic Region": [
+      "aar", "amh", "gax", "gaz", "gmv", "hae", "hdy", "orm", "sgw", "tir"
+    ],
+    "Igbo Region": [
+      "ibo", "iso", "urh"
+    ]
+  },
+  "india": {
+    "Hindi Belt": [
+      "arp", "awa", "bfy", "bgc", "bho", "bra", "hif", "hin", "hoc", "ikh",
+      "kpm", "mag", "mai", "mjt", "mni", "mwq", "nag", "njh", "njo", "nkf",
+      "nsm", "pci", "quy", "zpq"
+    ],
+    "Gujarati-Rajasthani": [
+      "bgq", "guj", "mtr", "mup", "rwr"
+    ],
+    "Marathi-Konkani": [
+      "kfb", "mar"
+    ],
+    "Punjabi-Sindhi": [
+      "pan", "pnb", "skr", "snd"
+    ],
+    "Bengali-Assamese": [
+      "adj", "ald", "asm", "bdv", "ben", "btg", "buu", "gas", "grg", "grt",
+      "hdy", "ike", "jaa", "kbc", "kha", "kxp", "lus", "mhu", "mps", "mrr",
+      "myx", "rah", "rhg", "shu", "unr", "vah"
+    ],
+    "Odia": [
+      "bfw", "ckb", "dwk", "jun", "kdt", "kxv", "ory", "uki"
+    ],
+    "Nepali Belt": [
+      "gbm", "kfy", "npi"
+    ],
+    "Tamil": [
+      "tam"
+    ],
+    "Telugu": [
+      "kfc", "kff", "nka", "tel", "wsg"
+    ],
+    "Kannada": [
+      "kan", "tcy"
+    ],
+    "Malayalam": [
+      "mal"
+    ],
+    "Tribal (Cannot be regionally sorted)": [
+      "adi", "dbv", "tsv"
+    ]
+  },
+  "spanishSphere": {
+    "Colombia": [
+      "aca", "arh", "bsn", "coe", "cui", "des", "guc", "guh", "gum", "gvc",
+      "ikk", "inb", "kog", "kpc", "pbb", "pio", "pir", "sri", "tnc"
+    ],
+    "Venezuela": [
+      "ake", "guu", "pid", "shb", "wba", "yrl", "yup"
+    ],
+    "Ecuador": [
+      "acu", "auc", "cbi", "jiv", "kwi", "qug", "qxl"
+    ],
+    "Peru": [
+      "agr", "ame", "amr", "boa", "cbr", "cbs", "cbu", "cjo", "cpb", "cpc",
+      "cpu", "cpy", "cul", "hto", "hub", "huu", "mcb", "mcd", "not", "qub",
+      "quf", "quh", "qul", "qup", "quy", "quz", "qva", "qvc", "qve", "qvh",
+      "qvm", "qvn", "qvs", "qvw", "qwh", "qxh", "qxn", "qxo", "shp", "yaa",
+      "yad"
+    ],
+    "Bolivia": [
+      "cax", "gnw", "gui", "gyr", "ign", "quh", "qul", "tna", "trn", "yuz"
+    ],
+    "Chile": [
+      "spa", "arn", "rap"
+    ],
+    "Argentina": [
+      "spa", "crt"
+    ],
+    "Paraguay": [
+      "spa", "cag", "ceg", "enl", "gug", "tmf"
+    ],
+    "Guatemala": [
+      "acr", "cak", "cbi", "kac", "mcb", "mpd", "tpt"
+    ],
+    "Mexico: Oto-Manguean (Mixtec)": [
+      "jmx", "mbz", "mdv", "meh", "mib", "mie", "mig", "mih", "mil", "mim",
+      "mio", "mip", "mit", "miy", "miz", "mjc", "mks", "mpm", "mqh", "mza",
+      "vmj", "xta"
+    ],
+    "Mexico: Oto-Manguean (Zapotec)": [
+      "zaa", "zab", "zac", "zad", "zae", "zai", "zam", "zao", "zaq", "zar",
+      "zas", "zav", "zaw", "zca", "zcd", "zpc", "zpg", "zpi", "zpl", "zpm",
+      "zpo", "zpq", "zpt", "zpu", "zpv", "zpz"
+    ],
+    "Mexico: Oto-Manguean (Mazatec)": [
+      "maa", "maj", "maq", "mzi", "vmp", "vmy"
+    ],
+    "Mexico: Oto-Manguean (Otomi-Pame)": [
+      "ote", "otn"
+    ],
+    "Mexico: Oto-Manguean (Other)": [
+      "cco", "chj", "chz", "cle", "cnl", "cnt", "cpa", "cso", "ctl", "cuc"
+    ],
+    "Mexico: Mayan": [
+      "ach", "bcn", "ctu", "guu", "hch", "hus", "jaa", "kdf", "kdi", "mam",
+      "maw", "mgr", "mop", "mqj", "myk", "sym", "tzh", "tzo", "wer", "yua"
+    ],
+    "Mexico: Uto-Aztecan (Nahuatl)": [
+      "azz", "nlv", "npl", "nsu", "nuz"
+    ],
+    "Mexico: Mixe-Zoque": [
+      "mco", "mir", "mto", "mzl"
+    ],
+    "Mexico: Other": [
+      "cto", "qvm", "qvn", "qvs", "qvw", "qwh", "qxh", "qxn", "qxo", "spa"
+    ]
+  },
+  "myanmarSphere": {
+    "Myanmar: Burmese-Mon": [
+      "mnw", "mya"
+    ],
+    "Myanmar: Chin": [
+      "cbl", "cek", "cfm", "cmr", "cnw", "ctd", "cwe", "hlt", "ndh", "pce",
+      "pck"
+    ],
+    "Myanmar: Karen-Kayah": [
+      "kyu"
+    ]
+  },
+  "otherRegions": {
+    "Switzerland": [
+      "deu", "fra", "ita", "roh"
+    ],
+    "Italy": [
+      "ita", "lij", "lmo", "nap", "scn", "vec"
+    ],
+    "China": [
+      "cmn", "yue", "nan", "hak", "wuu"
+    ],
+    "Philippines": [
+      "tgl", "ceb", "ilo", "hil", "war", "pam", "pan", "bik"
+    ],
+    "Thailand": [
+      "tha", "nod", "kxm"
+    ],
+    "Iran": [
+      "fas", "azb", "kur"
+    ],
+    "Nigeria": [
+      "eng", "hau", "yor", "ibo", "fuv"
+    ],
+    "Kenya": [
+      "swa", "eng", "luo", "kam"
+    ],
+    "South Africa": [
+      "afr", "eng", "zul", "xho", "nso", "sot"
+    ],
+    "Ethiopia": [
+      "amh", "orm", "tir", "som"
+    ],
+    "Ghana": [
+      "eng", "aka", "ewe", "gaa"
+    ],
+    "Arabic World": [
+      "arb", "arz", "ary", "apc", "ajp", "aeb", "acm"
+    ],
+    "Chinese Languages": [
+      "cmn", "yue", "nan", "hak", "wuu", "cdo", "czh", "czo", "cpx", "hsn",
+      "cjy", "mnp", "lzh"
+    ]
+  }
+}
